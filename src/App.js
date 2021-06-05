@@ -120,7 +120,7 @@ class App extends React.Component {
 
     getUser = () => {
         axios
-            .get("http://localhost:8080/statistics/user")
+            .get("http://kstu-aec.herokuapp.com/statistics/user")
             .then(data => this.setState({ user: data.data }))
             .catch(err => {
                 console.log(err);
@@ -130,7 +130,7 @@ class App extends React.Component {
 
     help = () => {
         axios
-            .get("http://localhost:8080/statistics/help")
+            .get("http://kstu-aec.herokuapp.com/statistics/help")
             .then(data => this.setState({ help: data.data }))
             .catch(err => {
                 console.log(err);
@@ -144,15 +144,14 @@ class App extends React.Component {
     }
 
     render() {
-        let styleConfig = { color: "#86C232"}
         console.log('name = ', this.state.user.fullname,'pol = ', this.state.user.pol,' chl = ', this.state.user.chl,' upr = ', this.state.user.upr,' help = ', this.state.help);
         return (
             <div className="wrapper">
                 <header className="header">
                     <div className="header__body responsive-wrapper">
-                        <div className="header__name"><a href="http://localhost:8080/">Автоматизированный учебный курс</a></div>
+                        <div className="header__name"><a href="http://kstu-aec.herokuapp.com/">Автоматизированный учебный курс</a></div>
                         <nav className="header__nav">
-                            <a href="http://localhost:8080/profile">Личный кабинет</a>
+                            <a href="http://kstu-aec.herokuapp.com/profile">Личный кабинет</a>
                         </nav>
                     </div>
                 </header>
