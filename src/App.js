@@ -115,7 +115,7 @@ class RGraph extends React.Component{
 
 class App extends React.Component {
     state = {
-        user
+        user:null
     }
 
     getUser = () => {
