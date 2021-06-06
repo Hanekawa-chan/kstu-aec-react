@@ -244,10 +244,10 @@ class App extends React.Component {
 
     getUser = () => {
         console.log('Если здесь не работает');
-        console.log(`http://kstu-aec.herokuapp.com/statistics/user/${this.state.id}`);
+        console.log(`https://kstu-aec.herokuapp.com/statistics/user/${this.state.id}`);
         console.log('то и тут!');
         axios
-            .get(`http://kstu-aec.herokuapp.com/statistics/user/${this.state.id}`)
+            .get(`https://kstu-aec.herokuapp.com/statistics/user/${this.state.id}`)
             .then(data => this.setState({user: data.data}))
             .catch(err => {
                 console.log(err);
@@ -257,7 +257,7 @@ class App extends React.Component {
 
     help = () => {
         axios
-            .get("http://kstu-aec.herokuapp.com/statistics/help")
+            .get("https://kstu-aec.herokuapp.com/statistics/help")
             .then(data => this.setState({ help: data.data }))
             .catch(err => {
                 console.log(err);
@@ -276,9 +276,9 @@ class App extends React.Component {
             <div className="wrapper">
                 <header className="header">
                     <div className="header__body responsive-wrapper">
-                        <div className="header__name"><a href="http://kstu-aec.herokuapp.com/">Автоматизированный учебный курс</a></div>
+                        <div className="header__name"><a href="https://kstu-aec.herokuapp.com/">Автоматизированный учебный курс</a></div>
                         <nav className="header__nav">
-                            <a href="http://kstu-aec.herokuapp.com/profile">Личный кабинет</a>
+                            <a href="https://kstu-aec.herokuapp.com/profile">Личный кабинет</a>
                         </nav>
                     </div>
                 </header>
