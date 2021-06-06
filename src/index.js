@@ -2,9 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import App from "./App";
+import { BrowserRouter, Route } from 'react-router-dom'
 
 ReactDOM.render(
-    <App />,
+    (<BrowserRouter>
+        <Route
+            exact
+            path='/:id'
+            render={(props) => (<App id={props.match.params.id}/>)}
+        />
+    </BrowserRouter>),
     document.getElementById('root')
 );
 

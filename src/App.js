@@ -91,19 +91,138 @@ class ApexChart extends React.Component {
 }
 
 class RGraph extends React.Component{
-    render() {
-        const elements = [
-            { id: "1",
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: props.user,
+        };
+    }
+
+    getElements() {
+        const elements = [];
+
+        let index = 0;
+
+        let coursesArray = [];
+        let chaptersArray = [];
+        let testsArray = [];
+
+        elements[index] = {
+            id: "1",
+            style: {background: "rgba(0,0,0,0)", width: 480, height: 250, border: 'none'},
+            data: {
+                label: <ApexChart name={this.state.user.fullname}
+                                  upr={this.state.user.upr}
+                                  chl={this.state.user.chl}
+                                  pol={this.state.user.pol}/>
+            },
+            position: { x: window.outerWidth/2, y: 100 }
+        };
+
+        index++;
+
+        for (let i = 0; i < this.state.user.courses.length; i++) {
+            elements[index] = {
+                id: "c" + i.toString(10),
                 style: {background: "rgba(0,0,0,0)", width: 480, height: 250, border: 'none'},
                 data: {
-                    label: <ApexChart name={this.props.name}
-                                      upr={this.props.upr}
-                                      chl={this.props.chl}
-                                      pol={this.props.pol}/>
+                    label: <ApexChart name={this.state.user.courses[i].name}
+                                      upr={this.state.user.courses[i].upr}
+                                      chl={this.state.user.courses[i].chl}
+                                      pol={this.state.user.courses[i].pol}/>
                 },
-                position: { x: 100, y: 550 }
+                position: { x: (500 * i), y: 350 }
+            };
+            index++;
+            coursesArray[i] = "c" + (i).toString(10);
+        }
+
+        for (let i = 0; i < this.state.user.courses.length; i++) {
+            chaptersArray[i] = [];
+            for (let j = 0; j < this.state.user.courses[i].chapters.length; j++) {
+                elements[index] = {
+                    id: "ch" + j.toString(10),
+                    style: {background: "rgba(0,0,0,0)", width: 480, height: 250, border: 'none'},
+                    data: {
+                        label: <ApexChart name={this.state.user.courses[i].chapters[j].name}
+                                          upr={this.state.user.courses[i].chapters[j].upr}
+                                          chl={this.state.user.courses[i].chapters[j].chl}
+                                          pol={this.state.user.courses[i].chapters[j].pol}/>
+                    },
+                    position: {x: (500 * i), y: 600}
+                };
+                index++;
+                chaptersArray[i][j] = "ch" + (j).toString(10);
             }
-        ];
+        }
+
+        for (let i = 0; i < this.state.user.courses.length; i++) {
+            testsArray[i] = [];
+            for (let j = 0; j < this.state.user.courses[i].chapters.length; j++) {
+                testsArray[i][j] = [];
+                for (let r = 0; r < this.state.user.courses[i].chapters[j].tests.length; r++) {
+                    elements[index] = {
+                        id:  "t" + r.toString(10),
+                        style: {background: "rgba(0,0,0,0)", width: 480, height: 250, border: 'none'},
+                        data: {
+                            label: <ApexChart name={this.state.user.courses[i].chapters[j].tests[r].name}
+                                              upr={this.state.user.courses[i].chapters[j].tests[r].upr}
+                                              chl={this.state.user.courses[i].chapters[j].tests[r].chl}
+                                              pol={this.state.user.courses[i].chapters[j].tests[r].pol}/>
+                        },
+                        position: {x: (500 * i), y: 1000}
+                    };
+                    index++;
+                    testsArray[i][j][r] = "t" + r.toString(10);
+                }
+            }
+        }
+
+        console.log(coursesArray);
+        console.log(chaptersArray);
+        console.log(testsArray);
+
+        for (let i = 0; i < this.state.user.courses.length; i++) {
+            elements[index] = {
+                id: (index + 1).toString(10),
+                source: "1",
+                target: coursesArray[i],
+                animated: true
+            };
+            index++;
+        }
+
+        for (let i = 0; i < this.state.user.courses.length; i++) {
+            for (let j = 0; j < this.state.user.courses[i].chapters.length; j++) {
+                elements[index] = {
+                    id: (index + 1).toString(10),
+                    source: coursesArray[i],
+                    target: chaptersArray[i][j],
+                    animated: true
+                };
+                index++;
+            }
+        }
+
+        for (let i = 0; i < this.state.user.courses.length; i++) {
+            for (let j = 0; j < this.state.user.courses[i].chapters.length; j++) {
+                for (let r = 0; r < this.state.user.courses[i].chapters[j].tests.length; r++) {
+                    elements[index] = {
+                        id: (index + 1).toString(10),
+                        source: chaptersArray[i][j],
+                        target: testsArray[i][j][r],
+                        animated: true
+                    };
+                    index++;
+                }
+            }
+        }
+
+        return elements;
+    }
+
+    render() {
+        const elements = this.getElements();
 
         const graphStyles = { width: "100%", height: "1080px", backgroundColor: "#ffffff"};
 
@@ -114,14 +233,22 @@ class RGraph extends React.Component{
 }
 
 class App extends React.Component {
-    state = {
-        user:null
+    constructor(props) {
+        super(props);
+        this.state = {
+            id: this.props.id,
+            user: null,
+            help: -1,
+        };
     }
 
     getUser = () => {
+        console.log('Если здесь не работает');
+        console.log(`http://kstu-aec.herokuapp.com/statistics/user/${this.state.id}`);
+        console.log('то и тут!');
         axios
-            .get("http://kstu-aec.herokuapp.com/statistics/user")
-            .then(data => this.setState({ user: data.data }))
+            .get(`http://kstu-aec.herokuapp.com/statistics/user/${this.state.id}`)
+            .then(data => this.setState({user: data.data}))
             .catch(err => {
                 console.log(err);
                 return null;
@@ -144,7 +271,7 @@ class App extends React.Component {
     }
 
     render() {
-        console.log('name = ', this.state.user.fullname,'pol = ', this.state.user.pol,' chl = ', this.state.user.chl,' upr = ', this.state.user.upr,' help = ', this.state.help);
+        console.log(this.state.id)
         return (
             <div className="wrapper">
                 <header className="header">
@@ -158,9 +285,7 @@ class App extends React.Component {
                 <main className="main">
                     <div className="main__body responsive-wrapper">
                         <div className="graphic">
-                            {this.state.name.length === 1 && this.state.upr === -1 && this.state.pol === -1
-                            && this.state.chl === -1 && this.state.help === -1 ? (<div>Loading...</div>) : (<RGraph name={this.state.name}
-                            upr={this.state.upr} chl={this.state.chl} pol={this.state.pol}/>)}
+                            {this.state.user === null && this.state.help === -1 ? (<div>Загрузка графики...</div>) : (<RGraph user={this.state.user}/>)}
                         </div>
                     </div>
                 </main>
