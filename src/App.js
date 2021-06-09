@@ -107,6 +107,10 @@ class RGraph extends React.Component{
         let chaptersArray = [];
         let testsArray = [];
 
+        let coursesIndex = 0;
+        let chaptersIndex = 0;
+        let testsIndex = 0;
+
         elements[index] = {
             id: "1",
             style: {background: "rgba(0,0,0,0)", width: 480, height: 250, border: 'none'},
@@ -123,7 +127,7 @@ class RGraph extends React.Component{
 
         for (let i = 0; i < this.state.user.courses.length; i++) {
             elements[index] = {
-                id: "c" + i.toString(10),
+                id: "c" + coursesIndex.toString(10),
                 style: {background: "rgba(0,0,0,0)", width: 480, height: 250, border: 'none'},
                 data: {
                     label: <ApexChart name={this.state.user.courses[i].name}
@@ -134,14 +138,15 @@ class RGraph extends React.Component{
                 position: { x: (500 * i), y: 350 }
             };
             index++;
-            coursesArray[i] = "c" + (i).toString(10);
+            coursesArray[i] = "c" + (coursesIndex).toString(10);
+            coursesIndex++;
         }
 
         for (let i = 0; i < this.state.user.courses.length; i++) {
             chaptersArray[i] = [];
             for (let j = 0; j < this.state.user.courses[i].chapters.length; j++) {
                 elements[index] = {
-                    id: "ch" + j.toString(10),
+                    id: "ch" + chaptersIndex.toString(10),
                     style: {background: "rgba(0,0,0,0)", width: 480, height: 250, border: 'none'},
                     data: {
                         label: <ApexChart name={this.state.user.courses[i].chapters[j].name}
@@ -152,7 +157,8 @@ class RGraph extends React.Component{
                     position: {x: (500 * i), y: 600}
                 };
                 index++;
-                chaptersArray[i][j] = "ch" + (j).toString(10);
+                chaptersArray[i][j] = "ch" + (chaptersIndex).toString(10);
+                chaptersIndex++;
             }
         }
 
@@ -162,7 +168,7 @@ class RGraph extends React.Component{
                 testsArray[i][j] = [];
                 for (let r = 0; r < this.state.user.courses[i].chapters[j].tests.length; r++) {
                     elements[index] = {
-                        id:  "t" + r.toString(10),
+                        id:  "t" + testsIndex.toString(10),
                         style: {background: "rgba(0,0,0,0)", width: 480, height: 250, border: 'none'},
                         data: {
                             label: <ApexChart name={this.state.user.courses[i].chapters[j].tests[r].name}
@@ -173,7 +179,8 @@ class RGraph extends React.Component{
                         position: {x: (500 * i), y: 1000}
                     };
                     index++;
-                    testsArray[i][j][r] = "t" + r.toString(10);
+                    testsArray[i][j][r] = "t" + testsIndex.toString(10);
+                    testsIndex++;
                 }
             }
         }
